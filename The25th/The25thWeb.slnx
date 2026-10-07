@@ -1,8 +1,8 @@
 <Solution>
-  <Folder Name="/The25th_WEB/" />
+  <Folder Name="/The25thWeb/" />
   <Project Path="The25th.Business/The25th.Business.csproj" />
   <Project Path="The25th.DataAccess/The25th.DataAccess.csproj" />
   <Project Path="The25th.Models/The25th.Models.csproj" />
   <Project Path="The25th.Utility/The25th.Utility.csproj" />
-  <Project Path="The25th_WEB/The25th_WEB.csproj" />
+  <Project Path="The25thWeb/The25thWeb.csproj" />
 </Solution>

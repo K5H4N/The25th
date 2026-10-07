@@ -12,8 +12,8 @@ using The25th.DataAccess.Data;
 namespace The25th.DataAccess.Migrations;
 
 [DbContext(typeof(ApplicationDbContext))]
-[Migration("20261007141304_UpdateIdentityUsers")]
-partial class _20261007141304_UpdateIdentityUsers
+[Migration("20261007160302_UpdateIdentityUsers")]
+partial class _20261007160302_UpdateIdentityUsers
 {
     /// <inheritdoc />
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
