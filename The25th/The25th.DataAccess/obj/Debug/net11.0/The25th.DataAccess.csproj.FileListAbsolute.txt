@@ -32,3 +32,4 @@
 /Users/HAN/C# .NET/The25th/The25th.DataAccess/obj/Debug/net11.0/refint/The25th.DataAccess.dll
 /Users/HAN/C# .NET/The25th/The25th.DataAccess/obj/Debug/net11.0/The25th.DataAccess.pdb
 /Users/HAN/C# .NET/The25th/The25th.DataAccess/obj/Debug/net11.0/ref/The25th.DataAccess.dll
+/Users/HAN/C# .NET/The25th/The25th.DataAccess/obj/Debug/net11.0/The25th.DataAccess.sourcelink.json

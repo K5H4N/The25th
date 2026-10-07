@@ -36,3 +36,4 @@
 /Users/HAN/C# .NET/The25th/The25th.Business/obj/Debug/net11.0/refint/The25th.Business.dll
 /Users/HAN/C# .NET/The25th/The25th.Business/obj/Debug/net11.0/The25th.Business.pdb
 /Users/HAN/C# .NET/The25th/The25th.Business/obj/Debug/net11.0/ref/The25th.Business.dll
+/Users/HAN/C# .NET/The25th/The25th.Business/obj/Debug/net11.0/The25th.Business.sourcelink.json

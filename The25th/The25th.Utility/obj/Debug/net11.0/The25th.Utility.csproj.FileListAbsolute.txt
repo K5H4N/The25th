@@ -22,3 +22,4 @@
 /Users/HAN/C# .NET/The25th/The25th.Utility/obj/Debug/net11.0/The25th.Utility.pdb
 /Users/HAN/C# .NET/The25th/The25th.Utility/obj/Debug/net11.0/ref/The25th.Utility.dll
 /Users/HAN/C# .NET/The25th/The25th.Utility/obj/Debug/net11.0/The25th..8A882EF0.Up2Date
+/Users/HAN/C# .NET/The25th/The25th.Utility/obj/Debug/net11.0/The25th.Utility.sourcelink.json
