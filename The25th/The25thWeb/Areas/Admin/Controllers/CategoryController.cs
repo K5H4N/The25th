@@ -2,10 +2,13 @@ using The25th.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using The25th.Models;
 using The25th.Business.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
+using The25th.Utility;
 
 namespace The25thWeb.Areas.Customer.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.RoleAdmin)]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -13,6 +16,7 @@ namespace The25thWeb.Areas.Customer.Controllers
         {
             _categoryService = categoryService;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();

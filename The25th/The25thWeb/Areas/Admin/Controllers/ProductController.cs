@@ -4,10 +4,14 @@ using The25th.Models;
 using The25th.Business.Services.IServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using The25th.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using The25th.Utility;
 
 namespace The25thWeb.Areas.Customer.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.RoleAdmin)]
+
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -19,11 +23,11 @@ namespace The25thWeb.Areas.Customer.Controllers
             _categoryService = categoryService;
             _webHostEnvironment = webHostEnvironment;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View();
         }
-
         public async Task<IActionResult> Upsert(int? id)
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
@@ -46,7 +50,6 @@ namespace The25thWeb.Areas.Customer.Controllers
                 return View(productVM);
             }
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Upsert")]
@@ -104,6 +107,7 @@ namespace The25thWeb.Areas.Customer.Controllers
         }
 
         #region API CALLS
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var products = await _productService.GetAllProductsAsync(true);

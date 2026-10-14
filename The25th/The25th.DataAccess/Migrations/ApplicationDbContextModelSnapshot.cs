@@ -16,7 +16,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261007160302_UpdateIdentityUsers";
+    public override string LastMigrationId => "20261014083646_AddCityToApplicationUser";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -107,12 +107,10 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
             {
                 b.Property<string>("LoginProvider")
-                    .HasMaxLength(128)
-                    .HasColumnType("nvarchar(128)");
+                    .HasColumnType("nvarchar(450)");
 
                 b.Property<string>("ProviderKey")
-                    .HasMaxLength(128)
-                    .HasColumnType("nvarchar(128)");
+                    .HasColumnType("nvarchar(450)");
 
                 b.Property<string>("ProviderDisplayName")
                     .HasColumnType("nvarchar(max)");
@@ -149,12 +147,10 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("nvarchar(450)");
 
                 b.Property<string>("LoginProvider")
-                    .HasMaxLength(128)
-                    .HasColumnType("nvarchar(128)");
+                    .HasColumnType("nvarchar(450)");
 
                 b.Property<string>("Name")
-                    .HasMaxLength(128)
-                    .HasColumnType("nvarchar(128)");
+                    .HasColumnType("nvarchar(450)");
 
                 b.Property<string>("Value")
                     .HasColumnType("nvarchar(max)");
@@ -171,6 +167,9 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
 
                 b.Property<int>("AccessFailedCount")
                     .HasColumnType("int");
+
+                b.Property<string>("City")
+                    .HasColumnType("nvarchar(max)");
 
                 b.Property<string>("ConcurrencyStamp")
                     .IsConcurrencyToken()
