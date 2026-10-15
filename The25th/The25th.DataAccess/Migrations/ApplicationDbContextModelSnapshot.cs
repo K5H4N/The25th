@@ -16,7 +16,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261014083646_AddCityToApplicationUser";
+    public override string LastMigrationId => "20261015125028_AddShoppingCartOrderHeaderAndDetails";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -282,6 +282,102 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     });
             });
 
+        modelBuilder.Entity("The25th.Models.OrderDetails", b =>
+            {
+                var id = b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
+
+                b.Property<int>("Count")
+                    .HasColumnType("int");
+
+                b.Property<int>("OrderHeaderId")
+                    .HasColumnType("int");
+
+                b.Property<double>("Price")
+                    .HasColumnType("float");
+
+                b.Property<int>("ProductId")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.HasIndex("OrderHeaderId");
+
+                b.HasIndex("ProductId");
+
+                b.ToTable("OrderDetails");
+            });
+
+        modelBuilder.Entity("The25th.Models.OrderHeader", b =>
+            {
+                var id = b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
+
+                b.Property<string>("ApplicationUserId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("Carrier")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("City")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<DateTime>("OrderDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<string>("OrderStatus")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<double>("OrderTotal")
+                    .HasColumnType("float");
+
+                b.Property<string>("PaymentIntentId")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("PhoneNumber")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("PostalCode")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("SessionId")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<DateTime>("ShippingDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<string>("State")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("StreetAddress")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("TrackingNumber")
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ApplicationUserId");
+
+                b.ToTable("OrderHeaders");
+            });
+
         modelBuilder.Entity("The25th.Models.Product", b =>
             {
                 var id = b.Property<int>("Id")
@@ -445,6 +541,33 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     });
             });
 
+        modelBuilder.Entity("The25th.Models.ShoppingCart", b =>
+            {
+                var id = b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
+
+                b.Property<string>("ApplicationUserId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<int>("Count")
+                    .HasColumnType("int");
+
+                b.Property<int>("ProductId")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ApplicationUserId");
+
+                b.HasIndex("ProductId");
+
+                b.ToTable("ShoppingCarts");
+            });
+
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
             {
                 b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -496,6 +619,36 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .IsRequired();
             });
 
+        modelBuilder.Entity("The25th.Models.OrderDetails", b =>
+            {
+                b.HasOne("The25th.Models.OrderHeader", "OrderHeader")
+                    .WithMany()
+                    .HasForeignKey("OrderHeaderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("The25th.Models.Product", "Product")
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("OrderHeader");
+
+                b.Navigation("Product");
+            });
+
+        modelBuilder.Entity("The25th.Models.OrderHeader", b =>
+            {
+                b.HasOne("The25th.Models.ApplicationUser", "ApplicationUser")
+                    .WithMany()
+                    .HasForeignKey("ApplicationUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("ApplicationUser");
+            });
+
         modelBuilder.Entity("The25th.Models.Product", b =>
             {
                 b.HasOne("The25th.Models.Category", "Category")
@@ -505,6 +658,25 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .IsRequired();
 
                 b.Navigation("Category");
+            });
+
+        modelBuilder.Entity("The25th.Models.ShoppingCart", b =>
+            {
+                b.HasOne("The25th.Models.ApplicationUser", "ApplicationUser")
+                    .WithMany()
+                    .HasForeignKey("ApplicationUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("The25th.Models.Product", "Product")
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("ApplicationUser");
+
+                b.Navigation("Product");
             });
 #pragma warning restore 612, 618
     }
