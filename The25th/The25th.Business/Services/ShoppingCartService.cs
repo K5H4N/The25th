@@ -57,6 +57,7 @@ namespace The25th.Business.Services
             else
             {
                 _context.ShoppingCarts.Add(cart);
+                await _context.SaveChangesAsync();
                 return cart;
             }
         }

@@ -25,7 +25,6 @@ public class HomeController : Controller
         return View(products);
     }
 
-    [HttpGet]
     public async Task<IActionResult> Details(int productId)
     {
         var product = await _productService.GetProductByIdAsync(productId, includeCategory: true);
@@ -34,12 +33,13 @@ public class HomeController : Controller
             return NotFound();
         }
 
-        return View(new ShoppingCart
+        ShoppingCart cart = new()
         {
             ProductId = productId,
             Product = product,
             Count = 1
-        });
+        };
+        return View(cart);
     }
 
     [HttpPost]
