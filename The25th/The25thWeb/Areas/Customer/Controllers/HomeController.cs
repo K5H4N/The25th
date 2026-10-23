@@ -54,7 +54,7 @@ public class HomeController : Controller
         }
         shoppingCart.ApplicationUserId = userId;
         await _shoppingCartService.AddToCartAsync(shoppingCart);
-
+        TempData["success"] = "Item added to cart";
         return RedirectToAction("Details", new { productId = shoppingCart.ProductId });
     }
 }
