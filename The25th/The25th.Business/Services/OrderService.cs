@@ -16,7 +16,7 @@ namespace The25th.Business.Services
         {
             _db = db;
         }
-        public async Task<OrderHeader> CreteOrderAsync(OrderHeader orderHeader)
+        public async Task<OrderHeader> CreateOrderAsync(OrderHeader orderHeader)
         {
             _db.OrderHeaders.Add(orderHeader);
             await _db.SaveChangesAsync();
@@ -24,7 +24,7 @@ namespace The25th.Business.Services
             return orderHeader;
         }
 
-        public async Task<IEnumerable<OrderHeader?>> GetAllOredrAsync(string? userId = null, string? status = null, bool includeUser = false, bool includeDetail = false)
+        public async Task<IEnumerable<OrderHeader?>> GetAllOrderAsync(string? userId = null, string? status = null, bool includeUser = false, bool includeDetail = false)
         {
             var query = _db.OrderHeaders.AsQueryable();
 
@@ -47,7 +47,7 @@ namespace The25th.Business.Services
             return await query.ToListAsync();
         }
 
-        public async Task<OrderHeader?> GetOredrByIdAsync(int id, bool includeUser = false, bool includeDetail = false)
+        public async Task<OrderHeader?> GetOrderByIdAsync(int id, bool includeUser = false, bool includeDetail = false)
         {
             var query = _db.OrderHeaders.AsQueryable();
 
