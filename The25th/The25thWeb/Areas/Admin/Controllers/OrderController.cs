@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using The25th.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using The25th.Utility;
+using System.Security.Claims;
 
 namespace The25thWeb.Areas.Customer.Controllers
 {
@@ -37,9 +38,22 @@ namespace The25thWeb.Areas.Customer.Controllers
 
         #region API CALLS
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string status)
         {
-            var orders = await _orderService.GetAllOrderAsync();
+            string? userId = null;
+
+            if (!User.IsInRole(SD.RoleAdmin) && !User.IsInRole(SD.RoleEmployee))
+            {
+                var claimsIdentidy = (ClaimsIdentity)User.Identity;
+                userId = claimsIdentidy?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized();
+                }
+            }
+
+            var orders = await _orderService.GetAllOrderAsync(userId, status);
             return Json(new { data = orders });
         }
 

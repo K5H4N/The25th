@@ -1,11 +1,26 @@
-var productDataTable;
+var dataTable;
 
 $(document).ready(function () {
+    var url = window.location.search;
+    if(url.includes("cancelled")){
+        loadDataTable("cancelled");
+    } else if(url.includes("shipped")){
+        loadDataTable("shipped");
+    } else if(url.includes("processing")){
+        loadDataTable("processing");
+    } else if(url.includes("pending")){
+        loadDataTable("pending");
+    } else if(url.includes("approved")){
+        loadDataTable("approved");
+    } else{
+        loadDataTable("all");
+    }
     productDataTable();
 })
 
+function loadDataTable(status){
 new DataTable('#tblData', {
-    ajax: '/admin/order/getall',
+    ajax: '/admin/order/getall?status=' + status,
     columns: [
         { data: 'id', width: '5%' },
         { data: 'name', width: '20%' },
@@ -36,3 +51,4 @@ new DataTable('#tblData', {
         }
     ]
 } );
+}
