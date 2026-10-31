@@ -35,6 +35,30 @@ namespace The25thWeb.Areas.Customer.Controllers
             OrderHeader = await _orderService.GetOrderByIdAsync(orderId, includeDetail: true, includeUser: true);
             return View(OrderHeader);
         }
+        [HttpPost]
+        [Authorize(Roles = SD.RoleAdmin + "," + SD.RoleEmployee)]
+        public async Task<IActionResult> UpdateOrderDetails()
+        {
+            var orderHeaderFormDb = await _orderService.GetOrderByIdAsync(OrderHeader.Id);
+            orderHeaderFormDb.Name = OrderHeader.Name;
+            orderHeaderFormDb.PhoneNumber = OrderHeader.PhoneNumber;
+            orderHeaderFormDb.StreetAddress = OrderHeader.StreetAddress;
+            orderHeaderFormDb.City = OrderHeader.City;
+            orderHeaderFormDb.State = OrderHeader.State;
+            orderHeaderFormDb.PostalCode = OrderHeader.PostalCode;
+            if (!string.IsNullOrEmpty(OrderHeader.Carrier) && orderHeaderFormDb.OrderStatus == SD.StatusShipped)
+            {
+                orderHeaderFormDb.Carrier = OrderHeader.Carrier;
+            }
+            if (!string.IsNullOrEmpty(OrderHeader.TrackingNumber) && orderHeaderFormDb.OrderStatus == SD.StatusShipped)
+            {
+                orderHeaderFormDb.TrackingNumber = OrderHeader.TrackingNumber;
+            }
+            await _orderService.UpdateOrderAsync(orderHeaderFormDb);
+
+            TempData["Success"] = "Order Details Updated Successfully";
+            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFormDb.Id });
+        }
 
         #region API CALLS
         [AllowAnonymous]
