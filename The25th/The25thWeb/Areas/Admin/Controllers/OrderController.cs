@@ -32,8 +32,13 @@ namespace The25thWeb.Areas.Customer.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int orderId)
         {
-            OrderHeader = await _orderService.GetOrderByIdAsync(orderId, includeDetail: true, includeUser: true);
-            return View(OrderHeader);
+            var orderHeader = await _orderService.GetOrderByIdAsync(orderId, includeDetail: true, includeUser: true);
+            if (orderHeader == null)
+            {
+                return NotFound();
+            }
+
+            return View(orderHeader);
         }
         [HttpPost]
         [Authorize(Roles = SD.RoleAdmin + "," + SD.RoleEmployee)]
@@ -58,6 +63,53 @@ namespace The25thWeb.Areas.Customer.Controllers
 
             TempData["Success"] = "Order Details Updated Successfully";
             return RedirectToAction(nameof(Details), new { orderId = orderHeaderFormDb.Id });
+        }
+        [HttpPost]
+        [Authorize(Roles = SD.RoleAdmin + "," + SD.RoleEmployee)]
+        public async Task<IActionResult> UpdateOrderStatus(string status)
+        {
+            var orderHeader = await _orderService.GetOrderByIdAsync(OrderHeader.Id);
+            if (orderHeader == null)
+            {
+                TempData["error"] = "Order not found";
+                return RedirectToAction(nameof(Index));
+            }
+            string successMessage;
+            switch (status)
+            {
+                case SD.StatusInProcess:
+                    await _orderService.UpdateOrderStatusAsync(OrderHeader.Id, status);
+                    successMessage = "Order processing started sucessfully.";
+                    break;
+                case SD.StatusCancelled:
+                    await _orderService.UpdateOrderStatusAsync(OrderHeader.Id, status);
+                    successMessage = "Order cancelled sucessfully.";
+                    break;
+                case SD.StatusRefunded:
+                    await _orderService.UpdateOrderStatusAsync(OrderHeader.Id, status);
+                    successMessage = "Order refunded sucessfully.";
+                    break;
+                case SD.StatusShipped:
+
+                    if (string.IsNullOrEmpty(OrderHeader.Carrier) || string.IsNullOrEmpty(OrderHeader.TrackingNumber))
+                    {
+                        TempData["error"] = "Please provided both carrier and tracking number.";
+                        return RedirectToAction(nameof(Details), new { orderId = OrderHeader.Id });
+                    }
+
+                    await _orderService.UpdateOrderStatusAsync(
+                        OrderHeader.Id, SD.StatusShipped, OrderHeader.Carrier, OrderHeader.TrackingNumber
+                    );
+                    successMessage = "Order shipped sucessfully.";
+                    break;
+
+                default:
+                    TempData["error"] = "Invalid Status Update";
+                    return RedirectToAction(nameof(Details), new { orderId = OrderHeader.Id });
+            }
+
+            TempData["Success"] = successMessage;
+            return RedirectToAction(nameof(Details), new { orderId = OrderHeader.Id });
         }
 
         #region API CALLS

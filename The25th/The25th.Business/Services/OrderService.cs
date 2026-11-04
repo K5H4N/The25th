@@ -5,6 +5,7 @@ using The25th.Business.Services.IServices;
 using The25th.Models;
 using The25th.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using The25th.Utility;
 
 namespace The25th.Business.Services
 {
@@ -67,5 +68,29 @@ namespace The25th.Business.Services
             _db.OrderHeaders.Update(orderHeader);
             await _db.SaveChangesAsync();
         }
+
+        public async Task UpdateOrderStatusAsync(int id, string orderStatus, string? carrier = null, string? trackingNumber = null)
+        {
+            var order = await _db.OrderHeaders.FindAsync(id);
+            if (order == null)
+            {
+                throw new KeyNotFoundException($"Order {id} not found");
+            }
+            order.OrderStatus = orderStatus;
+            if (orderStatus == SD.StatusShipped)
+            {
+                order.ShippingDate = DateTime.UtcNow;
+                if (!string.IsNullOrEmpty(carrier))
+                {
+                    order.Carrier = carrier;
+                }
+                if (!string.IsNullOrEmpty(trackingNumber))
+                {
+                    order.TrackingNumber = trackingNumber;
+                }
+            }
+            await _db.SaveChangesAsync();
+        }
+
     }
 }

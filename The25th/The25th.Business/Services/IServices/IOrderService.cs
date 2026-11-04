@@ -11,5 +11,6 @@ namespace The25th.Business.Services.IServices
         Task<OrderHeader?> GetOrderByIdAsync(int id, bool includeUser = false, bool includeDetail = false);
         Task<IEnumerable<OrderHeader>> GetAllOrderAsync(string? userId = null, string? status = null, bool includeUser = false, bool includeDetail = false);
         Task UpdateOrderAsync(OrderHeader orderHeader);
+        Task UpdateOrderStatusAsync(int id, string orderStatus, string? carrier = null, string? trackingnumber = null);
     }
 }

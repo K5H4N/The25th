@@ -88,6 +88,7 @@ namespace The25thWeb.Areas.Customer.Controllers
             }).ToList();
             //create order
             await _orderService.CreateOrderAsync(shoppingCartVM.OrderHeader);
+            await _shoppingCartService.ClearCartAsync(userId);
             return RedirectToAction("OrderConfirmation", new { id = shoppingCartVM.OrderHeader.Id });
         }
         public async Task<IActionResult> OrderConfirmation(int id)
