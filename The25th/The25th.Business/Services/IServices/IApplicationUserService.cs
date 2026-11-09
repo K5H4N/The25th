@@ -7,6 +7,7 @@ namespace The25th.Business.Services.IServices
 {
     public interface IApplicationUserService
     {
-        Task<ApplicationUser?> GetUserByIdAsynce(string userId);
+        Task<ApplicationUser?> GetUserByIdAsync(string userId);
+        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
     }
 }

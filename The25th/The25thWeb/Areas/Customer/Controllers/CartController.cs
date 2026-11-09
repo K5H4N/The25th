@@ -35,7 +35,7 @@ namespace The25thWeb.Areas.Customer.Controllers
             }
 
             var cartItems = await _shoppingCartService.GetUserCartItemsAsync(userId);
-            var user = await _applicationUserService.GetUserByIdAsynce(userId);
+            var user = await _applicationUserService.GetUserByIdAsync(userId);
 
             ShoppingCartVM shoppingCartVM = new()
             {

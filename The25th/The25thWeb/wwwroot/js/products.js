@@ -1,9 +1,9 @@
 var productDataTable;
 
 $(document).ready(function () {
-    productDataTable();
+    loadDataTable();
 })
-
+function loadDataTable(){
 new DataTable('#tblData', {
     ajax: '/admin/product/getall',
     columns: [
@@ -30,7 +30,7 @@ new DataTable('#tblData', {
             }
         }
     ]
-} );
+} );}
 
 function Delete(url){
     Swal.fire({
