@@ -19,7 +19,7 @@ namespace The25th.Models.ViewModels
         public string NewPassword { get; set; }
         [DataType(DataType.Password)]
         [Display(Name = "Confirm New Password")]
-        [Compare("New Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare(nameof(NewPassword), ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 }

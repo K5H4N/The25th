@@ -5,7 +5,7 @@ $(document).ready(function () {
 })
 
 function loadDataTable(){
-new DataTable('#tblData', {
+userDataTable = new DataTable('#tblData', {
     ajax: '/admin/user/getall',
     columns: [
         { data: 'name', width: '25%' },
@@ -15,14 +15,21 @@ new DataTable('#tblData', {
             {
                 return '<span class="badge bg-secondary">' + data + '</span>';
             }},
-        { data: 'id', width: '25%', "render": function (data)
+        { data: {id:"id", lockoutEnd:"lockoutEnd"}, width: '25%', "render": function (data)
             {
+                var today = new Date().getTime();
+                var lockout = new Date(data.lockoutEnd).getTime();
+                var isLocked = lockout > today;
+
                 return `<div class="d-flex gap-2 justify-content-end">
-                            <a href="/admin/product/upsert?id=${data}" class="btn btn-sm btn-outline-success">
-                                <i class="bi bi-pencil-square"></i> Edit
+                            <a onclick="LockUnlock('${data.id}')" class="btn btn-sm ${isLocked ? 'btn-danger' : 'btn-success'}">
+                                <i class="bi bi-${isLocked ? 'lock' : 'unlock'}-fill"></i> ${isLocked ? 'Lock' : 'Unlock'}
                             </a>
-                            <a onclick="Delete('/admin/product/delete/${data}')" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash-square"></i> Delete
+                            <a href="/admin/user/RoleManagement?userId=${data.id}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-person-badge"></i> Role
+                            </a>
+                            <a href="/admin/user/ChangePassword?userId=${data.id}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-key-fill"></i> Password
                             </a>
                         </div>`;
             }
@@ -30,29 +37,17 @@ new DataTable('#tblData', {
     ]
 } );}
 
-function Delete(url){
-    Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) {
+function LockUnlock(id){
     $.ajax({
-        url: url,
-        type: 'DELETE',
+        type: "POST",
+        url: '/admin/user/LockUnlock',
+        data: JSON.stringify(id),
+        contentType: "application/json",
         success: function (data){
-            productDataTable.ajax.reload();
-            Swal.fire({
-    title: "Deleted!",
-    text: "Your file has been deleted.",
-    icon: "success"
-  });
+            if (data.success){
+                toastr.success(data.message);
+                userDataTable.ajax.reload();
+            }
         }
-    })
-  }
-});
+    });
 }
